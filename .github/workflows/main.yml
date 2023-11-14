@@ -1,0 +1,34 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: docker build -t your-image-name .
+
+    - name: Push Docker Image to Registry
+      run: docker push your-image-name
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Deploy to Production
+      run: |
+        docker stop your-container-name || true
+        docker rm your-container-name || true
+        docker pull your-image-name
+        docker run -d
