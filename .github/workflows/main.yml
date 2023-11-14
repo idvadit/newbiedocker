@@ -1,4 +1,4 @@
-name: CI/CD with Docker
+name: Docker CI/CD
 
 on:
   push:
@@ -10,31 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Build Docker Image
-      run: docker build -t newbiedocker .
-
-    - name: Login to Docker Hub
-      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login docker.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-    - name: Push Docker Image to Registry
-      run: docker push newbiedocker
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Login to Docker Hub
-      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login docker.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-    - name: Deploy to Production
-      run: |
-        docker stop newbiedocker-container || true
-        docker rm newbiedocker-container || true
-        docker pull docker.io/newbiedocker
-        docker run -d --name newbiedocker-container -p 80:80 newbiedocker
+    - name: Build Docker image
+      run: docker build -t adityarosiadi/newbiedocker:latest .
+
+    - name: Push Docker image
+      run: docker push adityarosiadi/newbiedocker:latest
