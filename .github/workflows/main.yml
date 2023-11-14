@@ -17,7 +17,7 @@ jobs:
       run: docker build -t newbiedocker .
 
     - name: Push Docker Image to Registry
-      run: docker push newdocker
+      run: docker push newbiedocker
 
   deploy:
     runs-on: ubuntu-latest
