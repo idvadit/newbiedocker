@@ -14,10 +14,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build Docker Image
-      run: docker build -t your-image-name .
+      run: docker build -t newbiedocker .
 
     - name: Push Docker Image to Registry
-      run: docker push your-image-name
+      run: docker push newdocker
 
   deploy:
     runs-on: ubuntu-latest
@@ -28,7 +28,4 @@ jobs:
 
     - name: Deploy to Production
       run: |
-        docker stop your-container-name || true
-        docker rm your-container-name || true
-        docker pull your-image-name
-        docker run -d
+        docker-compose up
